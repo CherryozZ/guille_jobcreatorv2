@@ -1,10 +1,11 @@
--- @param Name of the job
--- @param Label of the job
--- @param Ranks array
--- @param Points array
--- @param Options array
--- @return Job object
-JOB.CreateJob = function(name, label, ranks, points, options, blips)
+---comment
+---@param name any
+---@param label any
+---@param ranks any
+---@param points any
+---@param options any
+---@param blips any
+---@return table
     local self = { }
 
     self.name = name or "None"
@@ -14,17 +15,27 @@ JOB.CreateJob = function(name, label, ranks, points, options, blips)
     self.options = options or { }
     self.blips = blips or { }
 
-
-    -- @param Name of the job
-    -- @param Callback
-    -- @return Bool
-    self.modifyName = function(name, cb)
-        self.name = name
+    ---comment
+    ---@param newMarkers any
+    ---@param cb any
+    ---@return boolean or void
+    self.updateMarkers = function (newMarkers, cb)
+        self.points = newMarkers
+        GlobalState[self.name.."-guille"] = JOB.Jobs[self.name]
+        JOB.Print("INFO", ("Job updated '%s'"):format(self.name))
+        GlobalState.JobsData = JOB.Jobs
+        for k, v in pairs(JOB.Jobs[self.name].players) do 
+            TriggerClientEvent("jobcreatorv2:client:initData", tonumber(v))
+        end
+        JOB.Execute("UPDATE guille_jobcreator SET points = ? WHERE name = ?", {
+            json.encode(self.points),
+            self.name
+        })
         if cb then
             return cb(true)
         else
             return true
-        end        
+        end
     end
 
     return self

@@ -28,6 +28,7 @@
     min-height: 2vw;
     top: 1vw;
     text-align: center;
+    overflow-y: auto;
     background-color: rgb(255, 255, 255);
     border-radius: .2vw;
     width: 35vw;

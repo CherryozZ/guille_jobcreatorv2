@@ -2,6 +2,10 @@
     -webkit-filter: blur(0px);
 }
 
+.text {
+    -webkit-filter: blur(0px);
+}
+
 .main-wrapper {
     position: absolute;
     transform: translate(-50%, -50%);

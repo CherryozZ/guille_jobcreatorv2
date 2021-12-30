@@ -1,4 +1,4 @@
-JOB.RegisterCommand("createnewjob", function (source, args)
+JOB.RegisterCommand("managejobs", function (source, args)
     JOB.GetPlayer(source, function(ply)
         ply.triggerEvent("jobcreatorv2:client:openUi")
     end)
@@ -13,3 +13,5 @@ JOB.RegisterCommand("setguillejob", function (source, args)
     end
     JOB.AddJob(src, job, rank)
 end)
+
+JOB.Loaded:resolve()

@@ -24,6 +24,14 @@ JOB.GetPlayer = function(src, cb)
     end
 end
 
+JOB.GetJob = function(job, cb)
+    if cb then
+        return cb(JOB.Jobs[tostring(job)])
+    else
+        return JOB.Jobs[tostring(job)]
+    end
+end
+
 ---comment
 ---@param name any
 ---@param ... any
@@ -109,6 +117,7 @@ JOB.HandleNewJob = function(data)
             JOB.Jobs[data.name] = JOB.CreateJob(data.name, data.label, data.ranks, data.markers, { }, data.blips)
             GlobalState[data.name.."-guille"] = JOB.Jobs[data.name]
             JOB.Print("INFO", ("Job loaded '%s'"):format(data.name))
+            GlobalState.JobsData = JOB.Jobs
         end
     end)
 end
@@ -152,3 +161,18 @@ JOB.AddJob = function (src, job, rank)
         end
     end
 end
+
+
+JOB.EditValue = function (type, data)
+    local src <const> = source
+    JOB.IsAllowed(src, function (isAllowed)
+        if isAllowed then
+            if type == "updateMarkers" then
+                local Job = JOB.GetJob(data[1].Job)
+                Job.updateMarkers(data)
+            end
+        end
+    end)
+end
+
+RegisterNetEvent("jobcreatorv2:server:updateValue", JOB.EditValue)

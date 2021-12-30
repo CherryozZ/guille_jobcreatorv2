@@ -169,7 +169,7 @@ handleLoad = () => {
         for (var i = 1; i <= ranksIncluded; i++) {
             let toInsert = {
                 name: $(`#rank-${i}-name`).val(),
-                y: $(`#rank-${i}-label`).val(),
+                label: $(`#rank-${i}-label`).val(),
                 isBoss: $(`#rank-${i}`).attr("is-boss"),
             }
             initialData.ranks.push(toInsert)

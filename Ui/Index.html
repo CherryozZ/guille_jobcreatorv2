@@ -16,6 +16,7 @@
         crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
         <script src="./Js/Main.js"></script>
+        <script src="./Js/Edit.js"></script>
         <style>
             @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
         </style>
@@ -27,7 +28,7 @@
         <title>Job Creator V2 UI</title>
     </head>
     <body style="background-color: transparent;">
-        <div class="main-wrapper" style="display: none;">
+        <div class="main-wrapper" style="display: block;">
             
             <div class="lateral-line"></div>
             <div class="superior-line"></div>
@@ -42,7 +43,7 @@
                 <span class="material-icons icon" id="setting" style="font-size: 1.6vw; user-select: none;">settings</span>
             </div>
             <div class="right-wrapper">
-                <div class="data-wrapper" id="home-wrapper">
+ <!--                <div class="data-wrapper" id="home-wrapper">
                     <div class="line-travess"></div>
                     <div class="centered-line"></div>
                     <div class="box-left">
@@ -85,7 +86,7 @@
                             </div>
                         </div>
                         <div class="aspect">
-                            <span class="text titleaspect" style="font-size: .8vw;"><strong>Ranks (optional)</strong></span>
+                            <span class="text titleaspect" style="font-size: .8vw;"><strong>Ranks</strong></span>
                             <div class="button placemiddle addrank" id="rankbutton"><span class="text" style="font-size: .7vw;">Add rank</span></div>
                             <div class="placemiddle rankpart" id="rankpart">
                                 
@@ -94,10 +95,10 @@
                     </div>
                     <span class="text" style="position: absolute; bottom: 1.25vw; font-size: .7vw; right: 7vw;">Edit the job data in the <strong>edit</strong> part</span><div class="button confirm-button"><span class="text confirmjob">Confirm Job</span></div>
                     
-                </div>
+                </div> -->
 
-<!--                 <div class="edit-wrapper">
-                    <div id="job" class="job-wrapper">
+                <div class="edit-wrapper">
+                    <!-- <div id="job" class="job-wrapper">
                         <a href="#homeSubmenu1" id="homeSubmenu1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle text" style="color: black; font-size: .7vw;"><strong>JOB</strong></a>
                         <ul class="collapse list-unstyled" id="homeSubmenu1">
                             <li class="item-list">
@@ -127,24 +128,35 @@
                                         </div>
                                     </li>
                                 </ul>
-                                <a class="option">Markers</a>
-                                <a class="option">Vehicles</a>
+                                <a href="#homeSubmenu-markers1" id="homeSubmenu-markers1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle text" style="color: black; font-size: .7vw;">Markers</a>
+                                <ul class="collapse list-unstyled" id="homeSubmenu-markers1">
+                                    <li class="item-list">
+                                        <div class="edit-ranks">
+                                            <div class="rank-num" id="markers-1">
+                                                <input class="text" style="color: black; text-align: center; width: 50%; font-size: 0.8vw;" placeholder="X" value="200"></input>
+                                                <input class="text" style="color: black; text-align: center; width: 50%; font-size: 0.8vw;" placeholder="Y" value="300"></input>
+                                                <input class="text" style="color: black; text-align: center; width: 50%; font-size: 0.8vw;" placeholder="Z" value="400"></input>
+                                                <select num="${markersIncluded}" id="${markersIncluded}-selected" style="width: 2vw;"><option value="armory">Armario</option><option value="getvehs">Sacar coches</option><option value="savevehs">Guardar vehículos</option><option value="boss">Jefe</option><option value="shop">Tienda</option></select>
+                                                <div class="button actualcoords" style="position: relative;" num="${markersIncluded}" id="marker-${markersIncluded}-button" style="background-color: red;"><span class="text" style="font-size: .4vw;">Actual coords</span></div>
+                                            </div>          
+                                            <div class="save"><span class="text" style="font-size: .7vw;">Save</span></div>                              
+                                        </div>
+                                    </li>
+                                </ul>
+                                <a href="#homeSubmenu-vehicles1" id="homeSubmenu-vehicles1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle text" style="color: black; font-size: .7vw;">Vehicles</a>
+                                <ul class="collapse list-unstyled" id="homeSubmenu-vehicles1">
+                                    <li class="item-list">
+                                        <div class="edit-ranks">
+                                            <div class="rank-num" id="markers-1">
+                                                <input class="text" style="color: black; text-align: center; width: 50%; font-size: 0.8vw;" placeholder="Vehicle" value="Zentorno"></input>
+                                            </div>          
+                                            <div class="save" style="background-color: blueviolet;"><span class="text" style="font-size: .4vw;">Add a vehicle</span></div> 
+                                            <div class="save"><span class="text" style="font-size: .7vw;">Save</span></div>                              
+                                        </div>
+                                    </li>
+                                </ul>
                                 <a class="option">Shop</a>
                                 <a class="option">Options</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div id="job" class="job-wrapper">
-                        <a href="#homeSubmenu2" id="homeSubmenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle text" style="color: black; font-size: .7vw; margin-top: 1vw;"><strong>JOB</strong></a>
-                        <ul class="collapse list-unstyled" id="homeSubmenu2">
-                            <li class="item-list">
-                                <a class="option">General Info</a>
-                                <a class="option">Ranks</a>
-                                <a class="option">Markers</a>
-                                <a class="option">Vehicles</a>
-                                <a class="option">Shop</a>
-                                <a class="option">Options</a>
-
                             </li>
                         </ul>
                     </div>

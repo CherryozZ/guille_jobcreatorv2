@@ -28,6 +28,7 @@ RegisterNetEvent("jobcreatorv2:client:handleCallback", JOB.HandleCallback)
 
 JOB.OpenUi = function()
     SendNUIMessage({ type = "open" })
+    JOB.RefreshData()
     SetNuiFocus(true, true)
     JOB.Variables['IsOpen'] = true
 end

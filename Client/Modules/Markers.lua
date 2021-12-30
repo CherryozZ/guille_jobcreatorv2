@@ -7,6 +7,7 @@ JOB.HandleAll = function ()
         local OwnData = GlobalState[JOB.Variables.PlayerId.."-jobplayer"]
         JOB.Variables.OwnJob = OwnData.jobdata
         local JobData = GlobalState[OwnData.jobdata.name.."-guille"]
+        print(("Your job is %s"):format(OwnData.jobdata.name))
         while true do
             local PlayerPed = PlayerPedId()
             local PlayerCoords = GetEntityCoords(PlayerPed)

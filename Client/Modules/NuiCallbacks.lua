@@ -9,3 +9,8 @@ RegisterNUICallback("exit", function (data, cb)
     JOB.Variables['IsOpen'] = true
     cb(json.encode("ok"))
 end)
+
+RegisterNUICallback("updateInfo", function (data, cb)
+    TriggerServerEvent("jobcreatorv2:server:updateValue", data.data[1].Type, data.data)
+    cb(json.encode("ok"))
+end)

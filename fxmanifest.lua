@@ -31,12 +31,14 @@ client_scripts {
     './Client/Modules/NuiCallbacks.lua',
     './Client/Modules/Markers.lua',
     './Client/Modules/Functions.lua',
+    './Client/Modules/EditFunctions.lua',
 }
 
 ui_page './Ui/Index.html'
 
 files {
     './Ui/Js/Main.js',
+    './Ui/Js/Edit.js',
 
     './Ui/Css/Style.css',
     './Ui/Css/Edit.css',
