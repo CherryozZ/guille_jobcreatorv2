@@ -6,6 +6,7 @@
 ---@param options any
 ---@param blips any
 ---@return table
+JOB.CreateJob = function(name, label, ranks, points, options, blips)
     local self = { }
 
     self.name = name or "None"
