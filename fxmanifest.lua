@@ -32,6 +32,7 @@ client_scripts {
     './Client/Modules/Markers.lua',
     './Client/Modules/Functions.lua',
     './Client/Modules/EditFunctions.lua',
+    './Client/Modules/Framework.lua',
 }
 
 ui_page './Ui/Index.html'

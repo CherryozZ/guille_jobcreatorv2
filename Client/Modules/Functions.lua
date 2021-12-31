@@ -83,7 +83,21 @@ JOB.Markers = {
     ['getvehs'] = function (coords)
         JOB.FloatingNotify(coords, JOB.GetLocale("getVehs"))
         if IsControlJustPressed(1, 38) then
-
+            local OwnData = GlobalState[JOB.Variables.PlayerId.."-jobplayer"]
+            local JobData = GlobalState[OwnData.jobdata.name.."-guille"]
+            
+            local VehData = {}
+            for k, v in pairs(JobData['publicvehicles']) do
+                table.insert(VehData, {label = JOB.FirstToUpper(v), value = v})
+            end
+            if #VehData == 0 then
+                return JOB.Notify("You do not have vehicles, add them in the job management")
+            end
+            JOB.OpenMenu("Vehicles", "vehs_menu", VehData, function (data, menu)
+                local v = data.current.value
+                JOB.SpawnVehicle(v)
+                menu.close()
+            end)
         end
     end,
     ---comment
@@ -111,3 +125,65 @@ JOB.Markers = {
         end
     end,
 }
+
+---comment
+---@param str any
+---@return string
+JOB.FirstToUpper = function(str)
+    return (str:gsub("^%l", string.upper))
+end
+
+JOB.SpawnVehicle = function (vehicle)
+    local veh = GetHashKey(vehicle)
+    if not HasModelLoaded(veh) and IsModelInCdimage(veh) then
+		RequestModel(veh)
+
+		while not HasModelLoaded(veh) do
+			Citizen.Wait(4)
+		end
+	end
+	local model = (type(vehicle) == 'number' and vehicle or GetHashKey(vehicle))
+	networked = networked == nil and true or networked
+	CreateThread(function()
+        Wait(2000)
+		ESX.Streaming.RequestModel(model)
+
+		local vehicle = CreateVehicle(model, GetEntityCoords(PlayerPedId()), 200, networked, false)
+
+		if networked then
+			local id = NetworkGetNetworkIdFromEntity(vehicle)
+			SetNetworkIdCanMigrate(id, true)
+			SetEntityAsMissionEntity(vehicle, true, false)
+		end
+		SetVehicleHasBeenOwnedByPlayer(vehicle, true)
+		SetVehicleNeedsToBeHotwired(vehicle, false)
+		SetModelAsNoLongerNeeded(model)
+		SetVehRadioStation(vehicle, 'OFF')
+
+		RequestCollisionAtCoord(GetEntityCoords(PlayerPedId()))
+		while not HasCollisionLoadedAroundEntity(vehicle) do
+			Citizen.Wait(0)
+		end
+        local heading = 0.00
+        TaskWarpPedIntoVehicle(PlayerPedId(), vehicle, -1)
+        local coords = GetEntityCoords(PlayerPedId())
+        CreateThread(function ()
+            while true do
+                SetEntityAlpha(vehicle, 180, 0)
+                SetVehicleUndriveable(vehicle, true)
+                if IsControlPressed(1, 175) then
+                    heading = heading + 0.50
+                elseif IsControlPressed(1, 174) then
+                    heading = heading - 0.50
+                elseif IsControlPressed(1, 176) then
+                    ResetEntityAlpha(vehicle)
+                    SetVehicleUndriveable(vehicle, false)
+                    break
+                end 
+                SetEntityHeading(vehicle, heading)
+                SetEntityCoords(vehicle, coords)
+                Wait(0)
+            end
+        end)
+	end)
+end

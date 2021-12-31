@@ -11,8 +11,6 @@ RegisterNUICallback("exit", function (data, cb)
 end)
 
 RegisterNUICallback("updateInfo", function (data, cb)
-    if data.data[1].Type then
-        TriggerServerEvent("jobcreatorv2:server:updateValue", data.data[1].Type, data.data)
-    end
+    TriggerServerEvent("jobcreatorv2:server:updateValue", data.type, data.data, data.job)
     cb(json.encode("ok"))
 end)

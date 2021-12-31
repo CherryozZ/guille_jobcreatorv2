@@ -8,15 +8,13 @@ handleLoad = () => {
 
     let JOB = []
 
-    JOB.ExecuteCallback = async function(name, data) {
+    JOB.ExecuteCallback = async function(name, data, type, job) {
         return new Promise(resolve => {
-            $.post(`https://${GetParentResourceName()}/`+name, JSON.stringify({data: data}), function(result) {
+            $.post(`https://${GetParentResourceName()}/`+name, JSON.stringify({data: data, type: type || "none", job: job}), function(result) {
                 resolve(JSON.parse(result))
             })
         })
     }
-
-   
 
     JOB.LoadJobs = (JobsData) => {
         Object.entries(JobsData).forEach(([key, value]) => {
@@ -43,11 +41,11 @@ handleLoad = () => {
                             <ul class="collapse list-unstyled" id="homeSubmenu-vehicles-${key}">
                                 <li class="item-list">
                                     <div class="edit-ranks">
-                                        <div class="rank-num" id="markers-1">
-                                            <input class="text" style="color: black; text-align: center; width: 50%; font-size: 0.8vw;" placeholder="Vehicle" value="Zentorno"></input>
+                                        <div class="rank-num" id="vehicles-${key}">
+                                            
                                         </div>          
-                                        <div class="save" style="background-color: blueviolet;"><span class="text" style="font-size: .4vw;">Add a vehicle</span></div> 
-                                        <div class="save"><span class="text" style="font-size: .7vw;">Save</span></div>                              
+                                        <div class="save" id="add-vehicle-${key}" style="background-color: blueviolet;"><span class="text" style="font-size: .4vw;">Add a vehicle</span></div> 
+                                        <div class="save" id="save-vehicles-${key}"><span class="text" style="font-size: .7vw;">Save</span></div>                              
                                     </div>
                                 </li>
                             </ul>
@@ -94,6 +92,7 @@ handleLoad = () => {
                 })
             })
             let markers = 0
+
             value['points'].forEach((val) => {
                 markers++
                 $(`#edit-markers-${key}`).append(`
@@ -127,6 +126,42 @@ handleLoad = () => {
                     $(`#markers-${actualMarker}`).remove()
                 })
             })
+            let vehicles = 0
+            value['publicvehicles'].forEach((val) => {
+                vehicles++
+                $(`#vehicles-${key}`).append(`              
+                    <input class="text" id="veh-${vehicles}-${key}" style="color: black; text-align: center; width: 50%; font-size: 0.8vw;" placeholder="Vehicle" value="${val}"></input>
+                    <div style="background-color: red" class="save" num="${vehicles}" id="delete-vehicles-${key}-${vehicles}"><span class="text" style="font-size: .7vw;">Delete</span></div>       
+                `)
+                $(`#delete-vehicles-${key}-${vehicles}`).on("click", function() {
+                    let actualVeh = $(this).attr("num")
+                    $(`#veh-${actualVeh}-${key}`).remove()
+                    $(this).remove()
+                })
+            })
+
+            $(`#add-vehicle-${key}`).on("click", function() {
+                vehicles++
+                $(`#vehicles-${key}`).append(`              
+                    <input class="text" id="veh-${vehicles}-${key}" style="color: black; text-align: center; width: 50%; font-size: 0.8vw;" placeholder="Vehicle" value=""></input>
+                    <div style="background-color: red" class="save" num="${vehicles}" id="delete-vehicles-${key}-${vehicles}"><span class="text" style="font-size: .7vw;">Delete</span></div>
+                `)
+                $(`#delete-vehicles-${key}-${vehicles}`).on("click", function() {
+                    let actualVeh = $(this).attr("num")
+                    $(`#veh-${actualVeh}-${key}`).remove()
+                    $(this).remove()
+                })
+            })
+
+            $(`#save-vehicles-${key}`).on("click", function() {
+                let Data = []
+                for (var i = 1; i <= vehicles; i++) {
+                    if ($(`#veh-${i}-${key}`).val()) {
+                        Data.push($(`#veh-${i}-${key}`).val())
+                    }
+                }
+                JOB.ExecuteCallback("updateInfo", Data, "updateVehicles", key)
+            })
 
             $(".dropdown-toggle").on("click", function() {
                 var isExpanded = $(this).attr("aria-expanded")
@@ -147,7 +182,6 @@ handleLoad = () => {
                     if ($(`#markere-${i}-x`).val()) {
                         let toInsert = {
                             Job: key,
-                            Type: "updateMarkers",
                             x: $(`#markere-${i}-x`).val(),
                             y: $(`#markere-${i}-y`).val(),
                             z: $(`#markere-${i}-z`).val(),
@@ -156,7 +190,7 @@ handleLoad = () => {
                         Data.push(toInsert)
                     }
                 }
-                JOB.ExecuteCallback("updateInfo", Data)
+                JOB.ExecuteCallback("updateInfo", Data, "updateMarkers", key)
             })
 
 

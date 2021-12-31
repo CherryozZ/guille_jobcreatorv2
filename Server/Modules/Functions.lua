@@ -163,13 +163,16 @@ JOB.AddJob = function (src, job, rank)
 end
 
 
-JOB.EditValue = function (type, data)
+JOB.EditValue = function (type, data, job)
     local src <const> = source
     JOB.IsAllowed(src, function (isAllowed)
         if isAllowed then
             if type == "updateMarkers" then
-                local Job = JOB.GetJob(data[1].Job)
+                local Job = JOB.GetJob(job)
                 Job.updateMarkers(data)
+            elseif type == "updateVehicles" then
+                local Job = JOB.GetJob(job)
+                Job.updatePublicVehs(data)
             end
         end
     end)

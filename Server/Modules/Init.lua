@@ -4,7 +4,7 @@ JOB.Thread(function ()
 
     JOB.Execute("SELECT * FROM `guille_jobcreator`", {}, function (data)
         for k, v in pairs(data) do
-            JOB.Jobs[v.name] = JOB.CreateJob(v.name, v.label, json.decode(v.ranks), json.decode(v.points), json.decode(v.data), json.decode(v.blips))
+            JOB.Jobs[v.name] = JOB.CreateJob(v.name, v.label, json.decode(v.ranks), json.decode(v.points), json.decode(v.data), json.decode(v.blips), json.decode(v.publicvehicles), json.decode(v.privatevehicles))
             JOB.Jobs[v.name].players = {}
             GlobalState[v.name.."-guille"] = JOB.Jobs[v.name]
             JOB.Print("INFO", ("Job loaded '%s'"):format(v.name))
@@ -29,6 +29,5 @@ JOB.Thread(function ()
             end
         end)
     end
-
 
 end)
