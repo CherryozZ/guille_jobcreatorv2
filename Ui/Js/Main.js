@@ -43,6 +43,7 @@ handleLoad = () => {
         if (e.key === "Escape") {
             JOB.ExecuteCallback("exit")
             $(".main-wrapper").fadeOut(200)
+            $(".job-wrapper").remove()
         }
     })
 

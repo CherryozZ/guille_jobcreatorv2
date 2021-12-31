@@ -35,7 +35,7 @@ handleLoad = () => {
                             <ul class="collapse list-unstyled" id="homeSubmenu-markers-${key}">
                                 <li class="item-list">
                                     <div class="edit-ranks" id="edit-markers-${key}">
-                                    <div class="save" id="save-markers-${key}"><span class="text" style="font-size: .7vw;">Save</span></div> <div class="save"><span class="text" style="font-size: .7vw;">Add</span></div>                                                            
+                                    <div class="save" id="save-markers-${key}"><span class="text" style="font-size: .7vw;">Save</span></div> <div class="save" id="add-markers-${key}"><span class="text" style="font-size: .7vw;">Add</span></div>                                                            
                                     </div>
                                 </li>
                             </ul>
@@ -57,11 +57,47 @@ handleLoad = () => {
                     </ul>
                 </div>            
             `)
+            $(`#add-markers-${key}`).on("click", async () => {
+                markers++
+                $(`#edit-markers-${key}`).append(`
+                    <div class="rank-num" id="markers-${markers}">
+                        <input class="text" id="markere-${markers}-x" style="color: black; text-align: center; width: 50%; font-size: 0.8vw;" placeholder="X" value="0"></input>
+                        <input class="text" id="markere-${markers}-y" style="color: black; text-align: center; width: 50%; font-size: 0.8vw;" placeholder="Y" value="0"></input>
+                        <input class="text" id="markere-${markers}-z" style="color: black; text-align: center; width: 50%; font-size: 0.8vw;" placeholder="Z" value="0"></input>
+                        <select num="${markers}" id="markere-${markers}-selected" style="width: 2vw;">
+                            <option value="armory">Armario</option>
+                            <option value="getvehs">Sacar coches</option>
+                            <option value="savevehs">Guardar vehículos</option>
+                            <option value="boss">Jefe</option>
+                            <option value="shop">Tienda</option>
+                        </select>
+                        <div class="button actualcoords" style="position: relative;" num="${markers}" id="markere-${markers}-button" style="background-color: red;"><span class="text" style="font-size: .4vw;">Actual coords</span></div>
+                        <div class="button actualcoords" style="position: relative;" num="${markers}" id="markeredelete-${markers}-button" style="background-color: red;"><span class="text" style="font-size: .4vw;">Delete</span></div>
+                    </div>  
+                `)
+                let coords = await JOB.ExecuteCallback("getCoords")
+                let axis = ['x', 'y', 'z']
+                axis.forEach((ax) => {
+                    $(`#markere-${markers}-${ax}`).val(coords[ax])
+                })
+                $(`#markere-${markers}-button`).on("click", async function() {
+                    let coords = await JOB.ExecuteCallback("getCoords")
+                    let actualMarker = $(this).attr("num")
+                    let axis = ['x', 'y', 'z']
+                    axis.forEach((ax) => {
+                        $(`#markere-${actualMarker}-${ax}`).val(coords[ax])
+                    })
+                })
+                $(`#markeredelete-${markers}-button`).on("click", function() {
+                    let actualMarker = $(this).attr("num")
+                    $(`#markers-${actualMarker}`).remove()
+                })
+            })
             let markers = 0
             value['points'].forEach((val) => {
                 markers++
                 $(`#edit-markers-${key}`).append(`
-                    <div class="rank-num" id="markers-1">
+                    <div class="rank-num" id="markers-${markers}">
                         <input class="text" id="markere-${markers}-x" style="color: black; text-align: center; width: 50%; font-size: 0.8vw;" placeholder="X" value="${val.x}"></input>
                         <input class="text" id="markere-${markers}-y" style="color: black; text-align: center; width: 50%; font-size: 0.8vw;" placeholder="Y" value="${val.y}"></input>
                         <input class="text" id="markere-${markers}-z" style="color: black; text-align: center; width: 50%; font-size: 0.8vw;" placeholder="Z" value="${val.z}"></input>
@@ -73,6 +109,7 @@ handleLoad = () => {
                             <option value="shop">Tienda</option>
                         </select>
                         <div class="button actualcoords" style="position: relative;" num="${markers}" id="markere-${markers}-button" style="background-color: red;"><span class="text" style="font-size: .4vw;">Actual coords</span></div>
+                        <div class="button actualcoords" style="position: relative;" num="${markers}" id="markeredelete-${markers}-button" style="background-color: red;"><span class="text" style="font-size: .4vw;">Delete</span></div>
                     </div>  
                 `)
                 $(`#markere-${markers}-selected`).val(val.selected);
@@ -84,6 +121,10 @@ handleLoad = () => {
                     axis.forEach((ax) => {
                         $(`#markere-${actualMarker}-${ax}`).val(coords[ax])
                     })
+                })
+                $(`#markeredelete-${markers}-button`).on("click", function() {
+                    let actualMarker = $(this).attr("num")
+                    $(`#markers-${actualMarker}`).remove()
                 })
             })
 
@@ -103,15 +144,17 @@ handleLoad = () => {
             $(`#save-markers-${key}`).on("click", function() {
                 let Data = []
                 for (var i = 1; i <= markers; i++) {
-                    let toInsert = {
-                        Job: key,
-                        Type: "updateMarkers",
-                        x: $(`#markere-${i}-x`).val(),
-                        y: $(`#markere-${i}-y`).val(),
-                        z: $(`#markere-${i}-z`).val(),
-                        selected: $(`#markere-${i}-selected`).val(),
+                    if ($(`#markere-${i}-x`).val()) {
+                        let toInsert = {
+                            Job: key,
+                            Type: "updateMarkers",
+                            x: $(`#markere-${i}-x`).val(),
+                            y: $(`#markere-${i}-y`).val(),
+                            z: $(`#markere-${i}-z`).val(),
+                            selected: $(`#markere-${i}-selected`).val(),
+                        }
+                        Data.push(toInsert)
                     }
-                    Data.push(toInsert)
                 }
                 JOB.ExecuteCallback("updateInfo", Data)
             })
