@@ -23,6 +23,7 @@ server_scripts {
     './Server/Modules/Commands.lua',
 
     './Server/Modules/Init.lua',
+    './Server/Modules/ESXInventory.lua'
 }
 
 client_scripts {

@@ -72,6 +72,15 @@ handleLoad = () => {
         }, 200);
     })
 
+    $("#edit").on("click", () => {
+        if (showing === "edit") { return }
+        $("#"+showing+"-wrapper").fadeOut(200)
+        showing = "edit"
+        setTimeout(() => {
+            $("#"+showing+"-wrapper").fadeIn(200) 
+        }, 200);
+    })
+
     $(".addblip").on("click", function () {  
         blipsIncluded++
         $("#blippart").append(`

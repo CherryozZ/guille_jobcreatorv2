@@ -50,11 +50,54 @@ handleLoad = () => {
                                 </li>
                             </ul>
                             <a class="option">Shop</a>
-                            <a class="option">Options</a>
+                            <a href="#homeSubmenu-options-${key}" id="homeSubmenu-options-${key}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle text" style="color: black; font-size: .7vw;">Options</a>
+                            <ul class="collapse list-unstyled" id="homeSubmenu-options-${key}">
+                                <li class="item-list">
+                                    <div class="edit-ranks" style="gap: 0vw;">
+                                        <label class="text" style="color: black; font-size: .7vw;">Handcuff
+                                            <input id="handcuff-${key}" type="checkbox" style="transform: scale(0.9);" checked="false">
+                                        </label>
+                                        <label class="text" style="color: black; font-size: .7vw;">Vehicle info
+                                            <input id="vehinfo-${key}" type="checkbox" style="transform: scale(0.9);" checked="false">
+                                        </label>
+                                        <label class="text" style="color: black; font-size: .7vw;">Check identity
+                                            <input id="identity-${key}" type="checkbox" style="transform: scale(0.9);" checked="false">
+                                        </label>
+                                        <label class="text" style="color: black; font-size: .7vw;">Put objects
+                                            <input id="objects-${key}" type="checkbox" style="transform: scale(0.9);" checked="false">
+                                        </label>
+                                        <label class="text" style="color: black; font-size: .7vw;">Billing
+                                            <input id="billing-${key}" type="checkbox" style="transform: scale(0.9);" checked="false">
+                                        </label>
+                                        <div class="save" name="${key}" id="saveoptions-${key}"><span class="text" style="font-size: .7vw;">Save</span></div>                              
+                                    </div>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </div>            
             `)
+
+            
+            $(`#handcuff-${key}`).prop("checked", value['options']['handcuff'])
+            $(`#vehinfo-${key}`).prop("checked", value['options']['vehinfo'])
+            $(`#identity-${key}`).prop("checked", value['options']['identity'])
+            $(`#objects-${key}`).prop("checked", value['options']['objects'])
+            $(`#billing-${key}`).prop("checked", value['options']['billing'])
+            
+
+            $(`#saveoptions-${key}`).on("click", function() {
+                const name = $(this).attr("name")
+                const Data = {
+                    handcuff: $(`#handcuff-${name}`).is(":checked"),
+                    vehinfo: $(`#vehinfo-${name}`).is(":checked"),
+                    identity: $(`#identity-${name}`).is(":checked"),
+                    objects: $(`#objects-${name}`).is(":checked"),
+                    billing: $(`#billing-${name}`).is(":checked"),
+                }
+                JOB.ExecuteCallback("updateInfo", Data, "updateOptions", key)
+            })
+
             $(`#add-markers-${key}`).on("click", async () => {
                 markers++
                 $(`#edit-markers-${key}`).append(`
@@ -63,11 +106,12 @@ handleLoad = () => {
                         <input class="text" id="markere-${markers}-y" style="color: black; text-align: center; width: 50%; font-size: 0.8vw;" placeholder="Y" value="0"></input>
                         <input class="text" id="markere-${markers}-z" style="color: black; text-align: center; width: 50%; font-size: 0.8vw;" placeholder="Z" value="0"></input>
                         <select num="${markers}" id="markere-${markers}-selected" style="width: 2vw;">
-                            <option value="armory">Armario</option>
-                            <option value="getvehs">Sacar coches</option>
-                            <option value="savevehs">Guardar vehículos</option>
-                            <option value="boss">Jefe</option>
-                            <option value="shop">Tienda</option>
+                            <option value="armory">Stash</option>
+                            <option value="getvehs">Get vehicles</option>
+                            <option value="savevehs">Save vehicles</option>
+                            <option value="boss">Boss</option>
+                            <option value="shop">Shop</option>
+                            <option value="wardrobe">Wardrobe</option>
                         </select>
                         <div class="button actualcoords" style="position: relative;" num="${markers}" id="markere-${markers}-button" style="background-color: red;"><span class="text" style="font-size: .4vw;">Actual coords</span></div>
                         <div class="button actualcoords" style="position: relative;" num="${markers}" id="markeredelete-${markers}-button" style="background-color: red;"><span class="text" style="font-size: .4vw;">Delete</span></div>
@@ -101,11 +145,12 @@ handleLoad = () => {
                         <input class="text" id="markere-${markers}-y" style="color: black; text-align: center; width: 50%; font-size: 0.8vw;" placeholder="Y" value="${val.y}"></input>
                         <input class="text" id="markere-${markers}-z" style="color: black; text-align: center; width: 50%; font-size: 0.8vw;" placeholder="Z" value="${val.z}"></input>
                         <select num="${markers}" id="markere-${markers}-selected" style="width: 2vw;">
-                            <option value="armory">Armario</option>
-                            <option value="getvehs">Sacar coches</option>
-                            <option value="savevehs">Guardar vehículos</option>
-                            <option value="boss">Jefe</option>
-                            <option value="shop">Tienda</option>
+                            <option value="armory">Stash</option>
+                            <option value="getvehs">Get vehicles</option>
+                            <option value="savevehs">Save vehicles</option>
+                            <option value="boss">Boss</option>
+                            <option value="shop">Shop</option>
+                            <option value="wardrobe">Wardrobe</option>
                         </select>
                         <div class="button actualcoords" style="position: relative;" num="${markers}" id="markere-${markers}-button" style="background-color: red;"><span class="text" style="font-size: .4vw;">Actual coords</span></div>
                         <div class="button actualcoords" style="position: relative;" num="${markers}" id="markeredelete-${markers}-button" style="background-color: red;"><span class="text" style="font-size: .4vw;">Delete</span></div>

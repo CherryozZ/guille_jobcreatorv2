@@ -28,7 +28,7 @@
         <title>Job Creator V2 UI</title>
     </head>
     <body style="background-color: transparent;">
-        <div class="main-wrapper" style="display: block;">
+        <div class="main-wrapper" style="display: none;">
             
             <div class="lateral-line"></div>
             <div class="superior-line"></div>
@@ -43,7 +43,7 @@
                 <span class="material-icons icon" id="setting" style="font-size: 1.6vw; user-select: none;">settings</span>
             </div>
             <div class="right-wrapper">
- <!--                <div class="data-wrapper" id="home-wrapper">
+                <div class="data-wrapper" id="home-wrapper">
                     <div class="line-travess"></div>
                     <div class="centered-line"></div>
                     <div class="box-left">
@@ -95,9 +95,9 @@
                     </div>
                     <span class="text" style="position: absolute; bottom: 1.25vw; font-size: .7vw; right: 7vw;">Edit the job data in the <strong>edit</strong> part</span><div class="button confirm-button"><span class="text confirmjob">Confirm Job</span></div>
                     
-                </div> -->
+                </div>
 
-                <div class="edit-wrapper">
+                <div id="edit-wrapper" class="edit-wrapper" style="display: none;">
                     <!-- <div id="job" class="job-wrapper">
                         <a href="#homeSubmenu1" id="homeSubmenu1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle text" style="color: black; font-size: .7vw;"><strong>JOB</strong></a>
                         <ul class="collapse list-unstyled" id="homeSubmenu1">
@@ -156,12 +156,34 @@
                                     </li>
                                 </ul>
                                 <a class="option">Shop</a>
-                                <a class="option">Options</a>
+                                <a href="#homeSubmenu-options1" id="homeSubmenu-options1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle text" style="color: black; font-size: .7vw;">Options</a>
+                                <ul class="collapse list-unstyled" id="homeSubmenu-options1">
+                                    <li class="item-list">
+                                        <div class="edit-ranks" style="gap: 0vw;">
+                                            <label class="text" style="color: black; font-size: .7vw;">Handcuff
+                                                <input id="handcuff" type="checkbox" style="transform: scale(0.9);" checked="checked">
+                                            </label>
+                                            <label class="text" style="color: black; font-size: .7vw;">Vehicle info
+                                                <input id="vehinfo" type="checkbox" style="transform: scale(0.9);" checked="checked">
+                                            </label>
+                                            <label class="text" style="color: black; font-size: .7vw;">Check identity
+                                                <input id="identity" type="checkbox" style="transform: scale(0.9);" checked="checked">
+                                            </label>
+                                            <label class="text" style="color: black; font-size: .7vw;">Put objects
+                                                <input id="objects" type="checkbox" style="transform: scale(0.9);" checked="checked">
+                                            </label>
+                                            <label class="text" style="color: black; font-size: .7vw;">Billing
+                                                <input id="billing" type="checkbox" style="transform: scale(0.9);" checked="checked">
+                                            </label>
+                                            <div class="save"><span class="text" style="font-size: .7vw;">Save</span></div>                              
+                                        </div>
+                                    </li>
+                                </ul>
                             </li>
                         </ul>
                     </div>
-                    
-                </div> -->
+                     -->
+                </div>
 
             </div>
             

@@ -106,15 +106,19 @@ JOB.HandleNewJob = function(data)
         if isAllowed then
             local _, count = data.name:gsub("%S+", "")
             if count > 1 then return JOB.Print("ERROR", "The name only can have one word!") end
-            JOB.Execute("INSERT INTO `guille_jobcreator` (name, label, points, ranks, data, blips) VALUES (?, ?, ?, ?, ?, ?)", {
+            JOB.Execute("INSERT INTO `guille_jobcreator` (name, label, points, ranks, data, blips, publicvehicles, privatevehicles, inventory, wardrobe) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", {
                 data.name,
                 data.label,
                 json.encode(data.markers),
                 json.encode(data.ranks),
                 json.encode({ }),
-                json.encode(data.blips)
+                json.encode(data.blips),
+                json.encode({ }),
+                json.encode({ }),
+                json.encode({ }),
+                json.encode({ }),
             })
-            JOB.Jobs[data.name] = JOB.CreateJob(data.name, data.label, data.ranks, data.markers, { }, data.blips)
+            JOB.Jobs[data.name] = JOB.CreateJob(data.name, data.label, data.ranks, data.markers, { }, data.blips, { }, { }, { }, { })
             GlobalState[data.name.."-guille"] = JOB.Jobs[data.name]
             JOB.Print("INFO", ("Job loaded '%s'"):format(data.name))
             GlobalState.JobsData = JOB.Jobs
@@ -165,6 +169,7 @@ end
 
 JOB.EditValue = function (type, data, job)
     local src <const> = source
+    print(json.encode(data))
     JOB.IsAllowed(src, function (isAllowed)
         if isAllowed then
             if type == "updateMarkers" then
@@ -173,6 +178,9 @@ JOB.EditValue = function (type, data, job)
             elseif type == "updateVehicles" then
                 local Job = JOB.GetJob(job)
                 Job.updatePublicVehs(data)
+            elseif type == "updateOptions" then
+                local Job = JOB.GetJob(job)
+                Job.updateOptions(data)
             end
         end
     end)
