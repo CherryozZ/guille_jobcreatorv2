@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"connection-string-parser@^1.0.4":
+  "integrity" "sha512-grmrIHzrZRjn53dwRqJTmtTRVc+gUiIk/tzjUrteN6aLN4l9DR6KE/IsGtjndyAlHhkmKjAHB9p7PJ0cFgO94w=="
+  "resolved" "https://registry.npmjs.org/connection-string-parser/-/connection-string-parser-1.0.4.tgz"
+  "version" "1.0.4"
+  dependencies:
+    "tslib" "^2.0.0"
+
 "denque@^2.0.1":
   "integrity" "sha512-tfiWc6BQLXNLpNiR5iGd0Ocu3P3VpxfzFiqubLgMfhfOw9WyvgJBd46CClNn9k3qfbjvT//0cf7AlYRX/OslMQ=="
   "resolved" "https://registry.npmjs.org/denque/-/denque-2.0.1.tgz"
@@ -86,6 +93,11 @@
   "integrity" "sha512-vF4ZbYdKS8OnoJAWBmMxCQDkiEBkGQYU7UZPtL8flbDRSNkhaXvRJ279ZtI6M+zDaQovVU4tuRgzK5fVhvFAhg=="
   "resolved" "https://registry.npmjs.org/sqlstring/-/sqlstring-2.3.2.tgz"
   "version" "2.3.2"
+
+"tslib@^2.0.0":
+  "integrity" "sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw=="
+  "resolved" "https://registry.npmjs.org/tslib/-/tslib-2.3.1.tgz"
+  "version" "2.3.1"
 
 "yallist@^2.1.2":
   "integrity" "sha1-HBH5IY8HYImkfdUS+TxmmaaoHVI="

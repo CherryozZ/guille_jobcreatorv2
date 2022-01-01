@@ -23,7 +23,8 @@ server_scripts {
     './Server/Modules/Commands.lua',
 
     './Server/Modules/Init.lua',
-    './Server/Modules/ESXInventory.lua'
+    './Server/Modules/ESXInventory.lua',
+    './Server/Modules/InteractionMenu.lua'
 }
 
 client_scripts {
@@ -34,6 +35,7 @@ client_scripts {
     './Client/Modules/Functions.lua',
     './Client/Modules/EditFunctions.lua',
     './Client/Modules/Framework.lua',
+    './Client/Modules/InteractionMenu.lua'
 }
 
 ui_page './Ui/Index.html'

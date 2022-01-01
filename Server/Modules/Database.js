@@ -1,13 +1,24 @@
 // OXMYSQL Wrapper code, all rights deserved to them.
 
+const convar = GetConvar("mysql_connection_strings");
+
 const { createPool } = require('mysql2/promise');
 
+const { ConnectionStringParser } = require("connection-string-parser");
+
+const connectionStringParser = new ConnectionStringParser({
+	scheme: "mysql",
+	hosts: []
+});
+
+const connectionObject = connectionStringParser.parse(convar);
+
 const pool = createPool({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'plumeesxlegacy_4f954e',
-    charset: 'utf8mb4_unicode_ci',
+    host: connectionObject['hosts']['host'],
+    user: connectionObject['username'],
+    password: connectionObject['password'] || '',
+    database: connectionObject['endpoint'],
+    charset: connectionObject['options']['charset'],
     multipleStatements: false,
     namedPlaceholders: true,
     waitForConnections: true,
@@ -25,7 +36,7 @@ const execute = async (query, parameters) => {
     } catch (error) {
         return console.error(error.message);
     }
-}
+};
 
 global.exports("execute", (query, parameters, callback = () => { }) => {
     execute(query, parameters).then((result) => {

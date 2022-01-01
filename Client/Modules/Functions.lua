@@ -4,6 +4,7 @@ JOB.Variables = {
     PlayerId = GetPlayerServerId(PlayerId()),
     IsChanging = false,
     OwnJob = nil,
+    Handcuff = false
 }
 
 ---comment
@@ -155,7 +156,7 @@ JOB.SpawnVehicle = function (vehicle)
 		RequestModel(veh)
 
 		while not HasModelLoaded(veh) do
-			Citizen.Wait(4)
+			Wait(4)
 		end
 	end
 	local model = (type(vehicle) == 'number' and vehicle or GetHashKey(vehicle))
@@ -346,10 +347,7 @@ JOB.GetStock = function ()
                     if count <= data.current.quantity then
                         TriggerServerEvent("jobcreatorv2:server:removeItemInv", data.current.type, data.current.name, count, JOB.Variables.OwnJob.name)
                         JOB.GetStock()
-                        ESX.UI.Menu.CloseAll()
-                        
-                        
-                        
+                        ESX.UI.Menu.CloseAll()                        
                     else
                         JOB.Notify('inv_ammount')
                     end
@@ -365,4 +363,81 @@ JOB.GetStock = function ()
     end, function(data, menu) 
         menu.close() 
     end)
+end
+
+---comment
+---@param onlyOtherPlayers any
+---@param returnKeyValue any
+---@param returnPeds any
+---@return table
+JOB.GetPlayers = function(onlyOtherPlayers, returnKeyValue, returnPeds)
+	local players, myPlayer = {}, PlayerId()
+
+	for k,player in ipairs(GetActivePlayers()) do
+		local ped = GetPlayerPed(player)
+
+		if DoesEntityExist(ped) and ((onlyOtherPlayers and player ~= myPlayer) or not onlyOtherPlayers) then
+			if returnKeyValue then
+				players[player] = ped
+			else
+				table.insert(players, returnPeds and ped or player)
+			end
+		end
+	end
+
+	return players
+end
+
+---comment
+---@param entities any
+---@param isPlayerEntities any
+---@param coords any
+---@param modelFilter any
+---@return integer
+---@return integer
+JOB.GetClosestEntity = function(entities, isPlayerEntities, coords, modelFilter)
+	local closestEntity, closestEntityDistance, filteredEntities = -1, -1, nil
+
+	if coords then
+		coords = vector3(coords.x, coords.y, coords.z)
+	else
+		local playerPed = PlayerPedId()
+		coords = GetEntityCoords(playerPed)
+	end
+
+	if modelFilter then
+		filteredEntities = {}
+
+		for k,entity in pairs(entities) do
+			if modelFilter[GetEntityModel(entity)] then
+				table.insert(filteredEntities, entity)
+			end
+		end
+	end
+
+	for k,entity in pairs(filteredEntities or entities) do
+		local distance = #(coords - GetEntityCoords(entity))
+
+		if closestEntityDistance == -1 or distance < closestEntityDistance then
+			closestEntity, closestEntityDistance = isPlayerEntities and k or entity, distance
+		end
+	end
+
+	return closestEntity, closestEntityDistance
+end
+
+---comment
+---@param coords any
+---@return integer
+JOB.GetClosestPlayer = function(coords)
+	return JOB.GetClosestEntity(JOB.GetPlayers(true, true), true, coords, nil)
+end
+
+JOB.Loadanimdict = function(dictname)
+	if not HasAnimDictLoaded(dictname) then
+		RequestAnimDict(dictname) 
+		while not HasAnimDictLoaded(dictname) do 
+			Citizen.Wait(1)
+		end
+	end
 end

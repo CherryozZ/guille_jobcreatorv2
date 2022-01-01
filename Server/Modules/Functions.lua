@@ -111,7 +111,7 @@ JOB.HandleNewJob = function(data)
                 data.label,
                 json.encode(data.markers),
                 json.encode(data.ranks),
-                json.encode({ }),
+                '{"identity":false,"vehinfo":false,"handcuff":false,"billing":false,"objects":false, "search": false}',
                 json.encode(data.blips),
                 json.encode({ }),
                 json.encode({ }),

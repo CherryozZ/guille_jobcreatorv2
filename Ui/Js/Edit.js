@@ -66,8 +66,11 @@ handleLoad = () => {
                                         <label class="text" style="color: black; font-size: .7vw;">Put objects
                                             <input id="objects-${key}" type="checkbox" style="transform: scale(0.9);" checked="false">
                                         </label>
-                                        <label class="text" style="color: black; font-size: .7vw;">Billing
+                                        <label class="text" style="color: black; font-size: .7vw;">Billing (only ESX)
                                             <input id="billing-${key}" type="checkbox" style="transform: scale(0.9);" checked="false">
+                                        </label>
+                                        <label class="text" style="color: black; font-size: .7vw;">Search 
+                                        <input id="search-${key}" type="checkbox" style="transform: scale(0.9);" checked="false">
                                         </label>
                                         <div class="save" name="${key}" id="saveoptions-${key}"><span class="text" style="font-size: .7vw;">Save</span></div>                              
                                     </div>
@@ -84,7 +87,7 @@ handleLoad = () => {
             $(`#identity-${key}`).prop("checked", value['options']['identity'])
             $(`#objects-${key}`).prop("checked", value['options']['objects'])
             $(`#billing-${key}`).prop("checked", value['options']['billing'])
-            
+            $(`#billing-${key}`).prop("checked", value['options']['search'])
 
             $(`#saveoptions-${key}`).on("click", function() {
                 const name = $(this).attr("name")
@@ -94,6 +97,7 @@ handleLoad = () => {
                     identity: $(`#identity-${name}`).is(":checked"),
                     objects: $(`#objects-${name}`).is(":checked"),
                     billing: $(`#billing-${name}`).is(":checked"),
+                    search: $(`#search-${name}`).is(":checked")
                 }
                 JOB.ExecuteCallback("updateInfo", Data, "updateOptions", key)
             })
