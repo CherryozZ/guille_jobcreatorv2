@@ -4,7 +4,8 @@ JOB.Variables = {
     PlayerId = GetPlayerServerId(PlayerId()),
     IsChanging = false,
     OwnJob = nil,
-    Handcuff = false
+    Handcuff = false,
+    IsDragging = false,
 }
 
 ---comment

@@ -10,7 +10,6 @@ JOB.OpenInteractionMenu = function ()
             table.insert(Elements, { label = "Handcuff", value = "handcuff" })
             table.insert(Elements, { label = "Remove Handcuffs", value = "rhandcuff" })
             table.insert(Elements, { label = "Drag", value = "drag" })
-            table.insert(Elements, { label = "Stop dragging", value = "rdrag" })
             table.insert(Elements, { label = "Put in vehicle", value = "putveh" })
             table.insert(Elements, { label = "Remove from vehicle", value = "remveh" })
         end
@@ -46,7 +45,20 @@ JOB.OpenInteractionMenu = function ()
                     TriggerServerEvent('jobcreatorv2:server:requestunaarrest', GetPlayerServerId(player), playerheading, playerCoords, playerlocation)
                 end
             elseif data.current.value == "drag" then
-            elseif data.current.value == "rdrag" then
+                local player, distance = JOB.GetClosestPlayer()
+                if distance < 3 and distance ~= -1  and player then
+                    TriggerServerEvent('jobcreatorv2:server:escort', GetPlayerServerId(player))
+                    if not JOB.Variables.IsDragging then
+                        ESX.Streaming.RequestAnimDict('switch@trevor@escorted_out', function()
+                            TaskPlayAnim(PlayerPedId(), 'switch@trevor@escorted_out', '001215_02_trvs_12_escorted_out_idle_guard2', 8.0, 1.0, -1, 49, 0, 0, 0, 0)
+                        end)
+                        JOB.Variables.IsDragging = true
+                    else
+                        Wait(500)
+                        ClearPedTasks(PlayerPedId())
+                        JOB.Variables.IsDragging = false
+                    end
+                end
             elseif data.current.value == "billing" then
             elseif data.current.value == "identity" then
             elseif data.current.value == "vehinfo" then
@@ -166,3 +178,49 @@ RegisterNetEvent('jobcreatorv2:client:douncuffing', function()
 	Wait(5500)
 	ClearPedTasks(PlayerPedId())
 end)
+
+local drag = false 
+local dragUser
+
+RegisterNetEvent('jobcreatorv2:client:drag', function(playerWhoDrag)
+	print("arrive")
+    if JOB.Variables.Handcuff then
+        drag = not drag
+        dragUser = playerWhoDrag
+        JOB.HandleDrag()
+	end
+end)
+
+JOB.HandleDrag = function ()
+    CreateThread(function ()
+        local wasDragged
+
+        while true do
+            Citizen.Wait(0)
+            local playerPed = PlayerPedId()
+    
+            if JOB.Variables.Handcuff and drag then
+                local targetPed = GetPlayerPed(GetPlayerFromServerId(dragUser))
+    
+                if DoesEntityExist(targetPed) and IsPedOnFoot(targetPed) and not IsPedDeadOrDying(targetPed, true) then
+                    if not wasDragged then
+                        AttachEntityToEntity(playerPed, targetPed, 11816, 0.10, 0.54, 0.0, 0.0, 0.0, 0.0, false, false, false, false, 2, true)
+                        wasDragged = true
+                    else
+                        Citizen.Wait(1000)
+                    end
+                else
+                    wasDragged = false
+                    drag = false
+                    DetachEntity(playerPed, true, false)
+                end
+            elseif wasDragged then
+                wasDragged = false
+                DetachEntity(playerPed, true, false)
+            else
+                break
+            end
+        end
+    end)
+
+end
