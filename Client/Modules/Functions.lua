@@ -66,7 +66,7 @@ RegisterNUICallback("createJob", function(data, cb)
 
     TriggerServerEvent("jobcreatorv2:server:sendNewJobData", data.data)
 
-    cb(json.encode("Cherryoz was here"))
+    cb(json.encode("Cherryozz was here"))
 end)
 
 RegisterNetEvent("jobcreatorv2:client:initData", JOB.HandleAll)
